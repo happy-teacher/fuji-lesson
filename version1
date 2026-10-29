@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>富士山頂生命故事：社會技巧教學互動控制板</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .active-card {
+      border-color: #3b82f6 !important;
+      background-color: #eff6ff !important;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+    }
+  </style>
+</head>
+<body class="bg-slate-100 min-h-screen text-slate-800 flex flex-col font-sans">
+
+  <!-- 頂部導航 -->
+  <header class="bg-white border-b border-slate-200 px-6 py-4 shadow-sm flex flex-wrap justify-between items-center gap-4">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center text-xl shadow-md">
+        <i class="fa-solid fa-mountain"></i>
+      </div>
+      <div>
+        <h1 class="text-xl font-bold text-slate-900 tracking-tight">富士山頂的生命故事：社會技巧課教學控制板</h1>
+        <p class="text-xs text-slate-500">核心主題：永遠善良（手心向下） × 對家人的愛與關心</p>
+      </div>
+    </div>
+
+    <!-- 45分鐘課堂計時器 -->
+    <div class="flex items-center gap-3 bg-slate-50 px-4 py-2 rounded-xl border border-slate-200">
+      <i class="fa-regular fa-clock text-blue-600"></i>
+      <span class="text-sm font-semibold text-slate-600">課堂倒數：</span>
+      <span id="timer-display" class="font-mono text-lg font-bold text-slate-800">45:00</span>
+      <button id="timer-btn" onclick="toggleTimer()" class="ml-2 text-xs bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg transition">
+        開始
+      </button>
+      <button onclick="resetTimer()" class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 px-2.5 py-1.5 rounded-lg transition">
+        重設
+      </button>
+    </div>
+  </header>
+
+  <!-- 主內容區 -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+    <!-- 左半部：播放器與控制區 (7/12) -->
+    <div class="lg:col-span-7 flex flex-col gap-4">
+      <!-- 影片外框 -->
+      <div class="bg-black rounded-2xl overflow-hidden shadow-lg relative aspect-video flex items-center justify-center">
+        <div id="player" class="w-full h-full"></div>
+
+        <!-- 播放器備援提示（當遇到 YouTube 嵌入限制或載入失敗時出現） -->
+        <div id="player-fallback" class="hidden absolute inset-0 bg-slate-900/90 text-white p-6 flex-col items-center justify-center text-center gap-4 z-20">
+          <i class="fa-solid fa-triangle-exclamation text-amber-400 text-3xl"></i>
+          <div>
+            <p class="text-base font-bold">YouTube 限制外部播放或載入中</p>
+            <p class="text-xs text-slate-300 mt-1">若畫面未正常載入，請直接點擊下方按鈕以原生頁面播放：</p>
+          </div>
+          <a id="fallback-link" href="#" target="_blank" class="bg-red-600 hover:bg-red-700 text-white px-5 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 shadow-lg transition">
+            <i class="fa-brands fa-youtube text-lg"></i> 開啟 YouTube 官方播放指定秒數
+          </a>
+        </div>
+      </div>
+
+      <!-- 播放器控制列 -->
+      <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-2">
+          <button onclick="rewind(5)" class="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm transition" title="倒退 5 秒">
+            <i class="fa-solid fa-backward-step"></i> -5s
+          </button>
+          <button id="play-pause-btn" onclick="togglePlay()" class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm transition flex items-center gap-2">
+            <i class="fa-solid fa-play"></i> 播放
+          </button>
+          <button onclick="forward(5)" class="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm transition" title="快轉 5 秒">
+            +5s <i class="fa-solid fa-forward-step"></i>
+          </button>
+          <button onclick="replayCurrentClip()" class="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm transition" title="重播當前區間">
+            <i class="fa-solid fa-rotate-left"></i> 重播此段
+          </button>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <span id="current-clip-info" class="text-xs text-slate-500 font-medium">尚未選取段落</span>
+          <a id="external-link" href="#" target="_blank" class="text-xs text-blue-600 hover:text-blue-800 underline flex items-center gap-1">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> 另開 YouTube
+          </a>
+        </div>
+      </div>
+
+      <!-- 教學輔助：核心圖解與腳本卡 -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- 手心向下視覺化 -->
+        <div class="bg-amber-50 border border-amber-200 p-4 rounded-xl">
+          <h3 class="text-sm font-bold text-amber-900 flex items-center gap-2">
+            <i class="fa-solid fa-hands-holding-child text-amber-600"></i> 「手心向下」動作引導
+          </h3>
+          <p class="text-xs text-amber-800 mt-1 leading-relaxed">
+            • <b>手心向上 🫴</b>：跟別人要東西（索取）<br>
+            • <b>手心向下 🫳</b>：主動分享、幫忙別人（給予）<br>
+            <span class="text-amber-700 font-semibold mt-1 inline-block">「施比受更有福」＝ 能夠給予的人最有福氣！</span>
+          </p>
+        </div>
+
+        <!-- 關心家人的 3 步驟腳本 -->
+        <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-xl">
+          <h3 class="text-sm font-bold text-emerald-900 flex items-center gap-2">
+            <i class="fa-solid fa-heart text-emerald-600"></i> 關心家人 3 步驟口訣
+          </h3>
+          <p class="text-xs text-emerald-800 mt-1 leading-relaxed">
+            1. <b>看 👀</b>：看著家人的臉 3 秒鐘。<br>
+            2. <b>說 🗣️</b>：說出「您辛苦了，謝謝您！」<br>
+            3. <b>做 🤝</b>：倒一杯溫開水，或是幫忙放鞋子。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 右半部：5 個點選段落卡片 (5/12) -->
+    <div class="lg:col-span-5 flex flex-col gap-3">
+      <div class="flex items-center justify-between">
+        <h2 class="text-sm font-bold text-slate-700 flex items-center gap-2">
+          <i class="fa-solid fa-list-check text-blue-600"></i> 教學片段清單（共 5 段，點擊即播）
+        </h2>
+        <span class="text-xs text-slate-400">總時長約 14 分 50 秒</span>
+      </div>
+
+      <!-- 段落 1 -->
+      <div id="clip-card-0" onclick="selectClip(0)" class="bg-white p-3.5 rounded-xl border border-slate-200 hover:border-blue-400 cursor-pointer transition shadow-sm">
+        <div class="flex items-center justify-between text-xs font-semibold text-slate-500 mb-1">
+          <span class="bg-slate-100 px-2 py-0.5 rounded text-slate-700">段落 1 · 影片二</span>
+          <span class="font-mono text-blue-600">10:55 - 13:35 (2分40秒)</span>
+        </div>
+        <h4 class="text-sm font-bold text-slate-800">認識主角佩佩與嚴峻高山環境</h4>
+        <p class="text-xs text-slate-500 mt-1">海拔 3776 公尺的生活、工時長高壓長痘痘，體會高山生活的辛苦與不容易。</p>
+      </div>
+
+      <!-- 段落 2 -->
+      <div id="clip-card-1" onclick="selectClip(1)" class="bg-white p-3.5 rounded-xl border border-slate-200 hover:border-blue-400 cursor-pointer transition shadow-sm">
+        <div class="flex items-center justify-between text-xs font-semibold text-slate-500 mb-1">
+          <span class="bg-slate-100 px-2 py-0.5 rounded text-slate-700">段落 2 · 影片二</span>
+          <span class="font-mono text-blue-600">16:00 - 17:55 (1分55秒)</span>
+        </div>
+        <h4 class="text-sm font-bold text-slate-800">體貼與主動提醒：寫告示牌幫助登山客</h4>
+        <p class="text-xs text-slate-500 mt-1">發現文化差異主動提醒規矩，不指責而是幫助化解尷尬，展現初階善良。</p>
+      </div>
+
+      <!-- 段落 3 -->
+      <div id="clip-card-2" onclick="selectClip(2)" class="bg-white p-3.5 rounded-xl border border-slate-200 hover:border-blue-400 cursor-pointer transition shadow-sm">
+        <div class="flex items-center justify-between text-xs font-semibold text-slate-500 mb-1">
+          <span class="bg-amber-100 px-2 py-0.5 rounded text-amber-800">段落 3 · 核心主題 · 影片一</span>
+          <span class="font-mono text-blue-600">13:20 - 16:15 (2分55秒)</span>
+        </div>
+        <h4 class="text-sm font-bold text-slate-800">善的循環：登山客送菜與「手心向下」</h4>
+        <p class="text-xs text-slate-500 mt-1">素未謀面的山友背蔬菜上山；佩佩示範手心向下，「施比受更有福」的善念概念。</p>
+      </div>
+
+      <!-- 段落 4 -->
+      <div id="clip-card-3" onclick="selectClip(3)" class="bg-white p-3.5 rounded-xl border border-slate-200 hover:border-blue-400 cursor-pointer transition shadow-sm">
+        <div class="flex items-center justify-between text-xs font-semibold text-slate-500 mb-1">
+          <span class="bg-emerald-100 px-2 py-0.5 rounded text-emerald-800">段落 4 · 核心主題 · 影片一</span>
+          <span class="font-mono text-blue-600">20:45 - 24:55 (4分10秒)</span>
+        </div>
+        <h4 class="text-sm font-bold text-slate-800">媽媽的善良身教與「回頭看變老的家人」</h4>
+        <p class="text-xs text-slate-500 mt-1">颱風天買光老伯伯的菜；自己走得再快，也要停下腳步回頭陪伴變老的家人。</p>
+      </div>
+
+      <!-- 段落 5 -->
+      <div id="clip-card-4" onclick="selectClip(4)" class="bg-white p-3.5 rounded-xl border border-slate-200 hover:border-blue-400 cursor-pointer transition shadow-sm">
+        <div class="flex items-center justify-between text-xs font-semibold text-slate-500 mb-1">
+          <span class="bg-emerald-100 px-2 py-0.5 rounded text-emerald-800">段落 5 · 核心主題 · 影片一</span>
+          <span class="font-mono text-blue-600">43:50 - 47:00 (3分10秒)</span>
+        </div>
+        <h4 class="text-sm font-bold text-slate-800">家人的牽掛與無條件支持</h4>
+        <p class="text-xs text-slate-500 mt-1">聽媽媽送給佩佩的叮嚀與祝福語音，感受家人無條件的守護與感動淚水。</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- YouTube IFrame API -->
+  <script>
+    // 片段資料設定
+    const clips = [
+      { id: 't7_6LCi06oA', start: 655, end: 815, title: '段落 1：認識主角佩佩與嚴峻高山環境 (10:55 - 13:35)' },
+      { id: 't7_6LCi06oA', start: 960, end: 1075, title: '段落 2：體貼與主動提醒 (16:00 - 17:55)' },
+      { id: '3AY1j6WrBtA', start: 800, end: 975, title: '段落 3：善的循環與手心向下 (13:20 - 16:15)' },
+      { id: '3AY1j6WrBtA', start: 1245, end: 1495, title: '段落 4：媽媽的善良身教與回頭看家人 (20:45 - 24:55)' },
+      { id: '3AY1j6WrBtA', start: 2630, end: 2820, title: '段落 5：家人的牽掛與無條件支持 (43:50 - 47:00)' }
+    ];
+
+    let player = null;
+    let currentClipIndex = 0;
+    let checkInterval = null;
+    let isPlaying = false;
+
+    // 載入 YouTube IFrame API
+    const tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    const firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('player', {
+        height: '100%',
+        width: '100%',
+        videoId: clips[0].id,
+        playerVars: {
+          'playsinline': 1,
+          'controls': 1,
+          'rel': 0,
+          'modestbranding': 1,
+          'origin': window.location.origin
+        },
+        events: {
+          'onReady': onPlayerReady,
+          'onStateChange': onPlayerStateChange,
+          'onError': onPlayerError
+        }
+      });
+    }
+
+    function onPlayerReady(event) {
+      updateActiveCardUI(0);
+      updateLink(0);
+    }
+
+    function onPlayerStateChange(event) {
+      const btn = document.getElementById('play-pause-btn');
+      if (event.data === YT.PlayerState.PLAYING) {
+        isPlaying = true;
+        btn.innerHTML = '<i class="fa-solid fa-pause"></i> 暫停';
+        startEndCheck();
+      } else {
+        isPlaying = false;
+        btn.innerHTML = '<i class="fa-solid fa-play"></i> 播放';
+        stopEndCheck();
+      }
+    }
+
+    function onPlayerError(e) {
+      console.warn("YouTube 嵌入限制碼:", e.data);
+      // 顯示備援按鈕
+      document.getElementById('player-fallback').classList.remove('hidden');
+      document.getElementById('player-fallback').classList.add('flex');
+    }
+
+    function selectClip(index) {
+      currentClipIndex = index;
+      const clip = clips[index];
+
+      // 隱藏備援畫面
+      document.getElementById('player-fallback').classList.add('hidden');
+      document.getElementById('player-fallback').classList.remove('flex');
+
+      updateActiveCardUI(index);
+      updateLink(index);
+
+      if (player && player.loadVideoById) {
+        player.loadVideoById({
+          videoId: clip.id,
+          startSeconds: clip.start,
+          endSeconds: clip.end
+        });
+      }
+    }
+
+    function updateLink(index) {
+      const clip = clips[index];
+      const ytUrl = `https://www.youtube.com/watch?v=${clip.id}&t=${clip.start}s`;
+      document.getElementById('external-link').href = ytUrl;
+      document.getElementById('fallback-link').href = ytUrl;
+      document.getElementById('current-clip-info').innerText = clip.title;
+    }
+
+    function updateActiveCardUI(index) {
+      for (let i = 0; i < clips.length; i++) {
+        const card = document.getElementById(`clip-card-${i}`);
+        if (i === index) {
+          card.classList.add('active-card');
+        } else {
+          card.classList.remove('active-card');
+        }
+      }
+    }
+
+    function startEndCheck() {
+      stopEndCheck();
+      checkInterval = setInterval(() => {
+        if (player && player.getCurrentTime) {
+          const current = player.getCurrentTime();
+          const targetEnd = clips[currentClipIndex].end;
+          if (current >= targetEnd) {
+            player.pauseVideo();
+            stopEndCheck();
+          }
+        }
+      }, 500);
+    }
+
+    function stopEndCheck() {
+      if (checkInterval) {
+        clearInterval(checkInterval);
+        checkInterval = null;
+      }
+    }
+
+    function togglePlay() {
+      if (!player) return;
+      if (isPlaying) {
+        player.pauseVideo();
+      } else {
+        player.playVideo();
+      }
+    }
+
+    function rewind(sec) {
+      if (!player) return;
+      const t = player.getCurrentTime();
+      player.seekTo(Math.max(clips[currentClipIndex].start, t - sec), true);
+    }
+
+    function forward(sec) {
+      if (!player) return;
+      const t = player.getCurrentTime();
+      player.seekTo(Math.min(clips[currentClipIndex].end, t + sec), true);
+    }
+
+    function replayCurrentClip() {
+      if (!player) return;
+      player.seekTo(clips[currentClipIndex].start, true);
+      player.playVideo();
+    }
+
+    // 45 分鐘課堂碼表邏輯
+    let timerTotalSeconds = 45 * 60;
+    let timerRunning = false;
+    let timerInterval = null;
+
+    function updateTimerDisplay() {
+      const m = Math.floor(timerTotalSeconds / 60).toString().padStart(2, '0');
+      const s = (timerTotalSeconds % 60).toString().padStart(2, '0');
+      document.getElementById('timer-display').innerText = `${m}:${s}`;
+    }
+
+    function toggleTimer() {
+      const btn = document.getElementById('timer-btn');
+      if (timerRunning) {
+        clearInterval(timerInterval);
+        timerRunning = false;
+        btn.innerText = '繼續';
+        btn.className = btn.className.replace('bg-amber-600 hover:bg-amber-700', 'bg-blue-600 hover:bg-blue-700');
+      } else {
+        timerRunning = true;
+        btn.innerText = '暫停';
+        btn.className = btn.className.replace('bg-blue-600 hover:bg-blue-700', 'bg-amber-600 hover:bg-amber-700');
+        timerInterval = setInterval(() => {
+          if (timerTotalSeconds > 0) {
+            timerTotalSeconds--;
+            updateTimerDisplay();
+          } else {
+            clearInterval(timerInterval);
+            timerRunning = false;
+            alert('課堂時間 45 分鐘已結束！');
+          }
+        }, 1000);
+      }
+    }
+
+    function resetTimer() {
+      clearInterval(timerInterval);
+      timerRunning = false;
+      timerTotalSeconds = 45 * 60;
+      updateTimerDisplay();
+      const btn = document.getElementById('timer-btn');
+      btn.innerText = '開始';
+      btn.className = 'ml-2 text-xs bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg transition';
+    }
+  </script>
+</body>
+</html>
