@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>富士山頂生命故事：社會技巧教學互動控制板</title>
+  <title>富士山頂的生命故事</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -24,8 +24,8 @@
         <i class="fa-solid fa-mountain"></i>
       </div>
       <div>
-        <h1 class="text-xl font-bold text-slate-900 tracking-tight">富士山頂的生命故事：社會技巧課教學控制板</h1>
-        <p class="text-xs text-slate-500">核心主題：永遠善良（手心向下） × 對家人的愛與關心</p>
+        <h1 class="text-xl font-bold text-slate-900 tracking-tight">富士山頂的生命故事</h1>
+        <p class="text-xs text-slate-500">永遠善良× 對家人的愛與關心</p>
       </div>
     </div>
 
@@ -52,7 +52,7 @@
       <div class="bg-black rounded-2xl overflow-hidden shadow-lg relative aspect-video flex items-center justify-center">
         <div id="player" class="w-full h-full"></div>
 
-        <!-- 播放器備援提示（當遇到 YouTube 嵌入限制或載入失敗時出現） -->
+        <!-- 播放器備援提示（若被限制時可跳轉） -->
         <div id="player-fallback" class="hidden absolute inset-0 bg-slate-900/90 text-white p-6 flex-col items-center justify-center text-center gap-4 z-20">
           <i class="fa-solid fa-triangle-exclamation text-amber-400 text-3xl"></i>
           <div>
@@ -118,76 +118,87 @@
       </div>
     </div>
 
-    <!-- 右半部：5 個點選段落卡片 (5/12) -->
+    <!-- 右半部：6 個點選段落卡片 (5/12) -->
     <div class="lg:col-span-5 flex flex-col gap-3">
       <div class="flex items-center justify-between">
         <h2 class="text-sm font-bold text-slate-700 flex items-center gap-2">
-          <i class="fa-solid fa-list-check text-blue-600"></i> 教學片段清單（共 5 段，點擊即播）
+          <i class="fa-solid fa-list-check text-blue-600"></i> 教學片段清單（共 6 段，點擊即播）
         </h2>
-        <span class="text-xs text-slate-400">總時長約 14 分 50 秒</span>
+        <span class="text-xs text-slate-400">點選卡片直接切換</span>
       </div>
 
       <!-- 段落 1 -->
-      <div id="clip-card-0" onclick="selectClip(0)" class="bg-white p-3.5 rounded-xl border border-slate-200 hover:border-blue-400 cursor-pointer transition shadow-sm">
+      <div id="clip-card-0" onclick="selectClip(0)" class="bg-white p-3 rounded-xl border border-slate-200 hover:border-blue-400 cursor-pointer transition shadow-sm">
         <div class="flex items-center justify-between text-xs font-semibold text-slate-500 mb-1">
           <span class="bg-slate-100 px-2 py-0.5 rounded text-slate-700">段落 1 · 影片二</span>
           <span class="font-mono text-blue-600">10:55 - 13:35 (2分40秒)</span>
         </div>
         <h4 class="text-sm font-bold text-slate-800">認識主角佩佩與嚴峻高山環境</h4>
-        <p class="text-xs text-slate-500 mt-1">海拔 3776 公尺的生活、工時長高壓長痘痘，體會高山生活的辛苦與不容易。</p>
+        <p class="text-xs text-slate-500 mt-0.5">海拔 3776 公尺的生活、高壓長痘痘，體會高山生活的不容易。</p>
       </div>
 
       <!-- 段落 2 -->
-      <div id="clip-card-1" onclick="selectClip(1)" class="bg-white p-3.5 rounded-xl border border-slate-200 hover:border-blue-400 cursor-pointer transition shadow-sm">
+      <div id="clip-card-1" onclick="selectClip(1)" class="bg-white p-3 rounded-xl border border-slate-200 hover:border-blue-400 cursor-pointer transition shadow-sm">
         <div class="flex items-center justify-between text-xs font-semibold text-slate-500 mb-1">
           <span class="bg-slate-100 px-2 py-0.5 rounded text-slate-700">段落 2 · 影片二</span>
           <span class="font-mono text-blue-600">16:00 - 17:55 (1分55秒)</span>
         </div>
         <h4 class="text-sm font-bold text-slate-800">體貼與主動提醒：寫告示牌幫助登山客</h4>
-        <p class="text-xs text-slate-500 mt-1">發現文化差異主動提醒規矩，不指責而是幫助化解尷尬，展現初階善良。</p>
+        <p class="text-xs text-slate-500 mt-0.5">發現文化差異主動提醒規矩，不責怪而是幫忙化解尷尬。</p>
       </div>
 
       <!-- 段落 3 -->
-      <div id="clip-card-2" onclick="selectClip(2)" class="bg-white p-3.5 rounded-xl border border-slate-200 hover:border-blue-400 cursor-pointer transition shadow-sm">
+      <div id="clip-card-2" onclick="selectClip(2)" class="bg-white p-3 rounded-xl border border-slate-200 hover:border-blue-400 cursor-pointer transition shadow-sm">
         <div class="flex items-center justify-between text-xs font-semibold text-slate-500 mb-1">
-          <span class="bg-amber-100 px-2 py-0.5 rounded text-amber-800">段落 3 · 核心主題 · 影片一</span>
+          <span class="bg-amber-100 px-2 py-0.5 rounded text-amber-800">段落 3 · 善良 · 影片一</span>
           <span class="font-mono text-blue-600">13:20 - 16:15 (2分55秒)</span>
         </div>
         <h4 class="text-sm font-bold text-slate-800">善的循環：登山客送菜與「手心向下」</h4>
-        <p class="text-xs text-slate-500 mt-1">素未謀面的山友背蔬菜上山；佩佩示範手心向下，「施比受更有福」的善念概念。</p>
+        <p class="text-xs text-slate-500 mt-0.5">素未謀面的山友背蔬菜上山；佩佩示範「手心向下」不求回報的善意。</p>
       </div>
 
       <!-- 段落 4 -->
-      <div id="clip-card-3" onclick="selectClip(3)" class="bg-white p-3.5 rounded-xl border border-slate-200 hover:border-blue-400 cursor-pointer transition shadow-sm">
+      <div id="clip-card-3" onclick="selectClip(3)" class="bg-white p-3 rounded-xl border border-slate-200 hover:border-blue-400 cursor-pointer transition shadow-sm">
         <div class="flex items-center justify-between text-xs font-semibold text-slate-500 mb-1">
-          <span class="bg-emerald-100 px-2 py-0.5 rounded text-emerald-800">段落 4 · 核心主題 · 影片一</span>
+          <span class="bg-emerald-100 px-2 py-0.5 rounded text-emerald-800">段落 4 · 家人 · 影片一</span>
           <span class="font-mono text-blue-600">20:45 - 24:55 (4分10秒)</span>
         </div>
         <h4 class="text-sm font-bold text-slate-800">媽媽的善良身教與「回頭看變老的家人」</h4>
-        <p class="text-xs text-slate-500 mt-1">颱風天買光老伯伯的菜；自己走得再快，也要停下腳步回頭陪伴變老的家人。</p>
+        <p class="text-xs text-slate-500 mt-0.5">颱風天買光老伯伯的菜；自己走得再快，也要停下腳步回頭陪伴家人。</p>
       </div>
 
       <!-- 段落 5 -->
-      <div id="clip-card-4" onclick="selectClip(4)" class="bg-white p-3.5 rounded-xl border border-slate-200 hover:border-blue-400 cursor-pointer transition shadow-sm">
+      <div id="clip-card-4" onclick="selectClip(4)" class="bg-white p-3 rounded-xl border border-purple-200 hover:border-purple-400 cursor-pointer transition shadow-sm bg-purple-50/30">
+        <div class="flex items-center justify-between text-xs font-semibold text-purple-700 mb-1">
+          <span class="bg-purple-100 px-2 py-0.5 rounded text-purple-800 font-bold">段落 5 · 雪中送炭 · 影片一</span>
+          <span class="font-mono text-purple-700 font-bold">26:45 - 31:25 (4分40秒)</span>
+        </div>
+        <h4 class="text-sm font-bold text-slate-800">雪中送炭：陪伴山友面對意外與生命最後一哩路</h4>
+        <p class="text-xs text-slate-600 mt-0.5">山友遭遇意外，佩佩徹夜協助翻譯與聯絡警方，在別人最脆弱無助時給予陪伴與依靠。</p>
+      </div>
+
+      <!-- 段落 6 -->
+      <div id="clip-card-5" onclick="selectClip(5)" class="bg-white p-3 rounded-xl border border-slate-200 hover:border-blue-400 cursor-pointer transition shadow-sm">
         <div class="flex items-center justify-between text-xs font-semibold text-slate-500 mb-1">
-          <span class="bg-emerald-100 px-2 py-0.5 rounded text-emerald-800">段落 5 · 核心主題 · 影片一</span>
+          <span class="bg-emerald-100 px-2 py-0.5 rounded text-emerald-800">段落 6 · 家人 · 影片一</span>
           <span class="font-mono text-blue-600">43:50 - 47:00 (3分10秒)</span>
         </div>
         <h4 class="text-sm font-bold text-slate-800">家人的牽掛與無條件支持</h4>
-        <p class="text-xs text-slate-500 mt-1">聽媽媽送給佩佩的叮嚀與祝福語音，感受家人無條件的守護與感動淚水。</p>
+        <p class="text-xs text-slate-500 mt-0.5">聽媽媽留給佩佩的祝福音檔，感受家人深厚溫暖的守護與感動淚水。</p>
       </div>
     </div>
   </main>
 
   <!-- YouTube IFrame API -->
   <script>
-    // 片段資料設定
+    // 6 個教學片段資料設定
     const clips = [
       { id: 't7_6LCi06oA', start: 655, end: 815, title: '段落 1：認識主角佩佩與嚴峻高山環境 (10:55 - 13:35)' },
       { id: 't7_6LCi06oA', start: 960, end: 1075, title: '段落 2：體貼與主動提醒 (16:00 - 17:55)' },
       { id: '3AY1j6WrBtA', start: 800, end: 975, title: '段落 3：善的循環與手心向下 (13:20 - 16:15)' },
       { id: '3AY1j6WrBtA', start: 1245, end: 1495, title: '段落 4：媽媽的善良身教與回頭看家人 (20:45 - 24:55)' },
-      { id: '3AY1j6WrBtA', start: 2630, end: 2820, title: '段落 5：家人的牽掛與無條件支持 (43:50 - 47:00)' }
+      { id: '3AY1j6WrBtA', start: 1605, end: 1885, title: '段落 5：雪中送炭，陪伴山友面對意外 (26:45 - 31:25)' },
+      { id: '3AY1j6WrBtA', start: 2630, end: 2820, title: '段落 6：家人的牽掛與無條件支持 (43:50 - 47:00)' }
     ];
 
     let player = null;
@@ -241,7 +252,6 @@
 
     function onPlayerError(e) {
       console.warn("YouTube 嵌入限制碼:", e.data);
-      // 顯示備援按鈕
       document.getElementById('player-fallback').classList.remove('hidden');
       document.getElementById('player-fallback').classList.add('flex');
     }
@@ -250,7 +260,6 @@
       currentClipIndex = index;
       const clip = clips[index];
 
-      // 隱藏備援畫面
       document.getElementById('player-fallback').classList.add('hidden');
       document.getElementById('player-fallback').classList.remove('flex');
 
@@ -333,7 +342,7 @@
       player.playVideo();
     }
 
-    // 45 分鐘課堂碼表邏輯
+    // 45 分鐘課堂倒數計時器
     let timerTotalSeconds = 45 * 60;
     let timerRunning = false;
     let timerInterval = null;
