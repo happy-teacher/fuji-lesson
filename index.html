@@ -52,7 +52,7 @@
       <div class="bg-black rounded-2xl overflow-hidden shadow-lg relative aspect-video flex items-center justify-center">
         <div id="player" class="w-full h-full"></div>
 
-        <!-- 播放器備援提示（若被限制時可跳轉） -->
+        <!-- 播放器備援提示 -->
         <div id="player-fallback" class="hidden absolute inset-0 bg-slate-900/90 text-white p-6 flex-col items-center justify-center text-center gap-4 z-20">
           <i class="fa-solid fa-triangle-exclamation text-amber-400 text-3xl"></i>
           <div>
@@ -157,14 +157,14 @@
         <p class="text-xs text-slate-500 mt-0.5">素未謀面的山友背蔬菜上山；佩佩示範「手心向下」不求回報的善意。</p>
       </div>
 
-      <!-- 段落 4 -->
+      <!-- 段落 4（調整為 19:20 開始） -->
       <div id="clip-card-3" onclick="selectClip(3)" class="bg-white p-3 rounded-xl border border-slate-200 hover:border-blue-400 cursor-pointer transition shadow-sm">
         <div class="flex items-center justify-between text-xs font-semibold text-slate-500 mb-1">
           <span class="bg-emerald-100 px-2 py-0.5 rounded text-emerald-800">段落 4 · 家人 · 影片一</span>
-          <span class="font-mono text-blue-600">20:45 - 24:55 (4分10秒)</span>
+          <span class="font-mono text-blue-600">19:20 - 24:55 (5分35秒)</span>
         </div>
         <h4 class="text-sm font-bold text-slate-800">媽媽的善良身教與「回頭看變老的家人」</h4>
-        <p class="text-xs text-slate-500 mt-0.5">颱風天買光老伯伯的菜；自己走得再快，也要停下腳步回頭陪伴家人。</p>
+        <p class="text-xs text-slate-500 mt-0.5">想念家人；媽媽颱風天買菜助人；體會自己走得再快，也要放慢回頭陪伴家人。</p>
       </div>
 
       <!-- 段落 5 -->
@@ -191,12 +191,12 @@
 
   <!-- YouTube IFrame API -->
   <script>
-    // 6 個教學片段資料設定
+    // 6 個教學片段資料設定（段落 4 已更新為 19:20 = 1160秒）
     const clips = [
       { id: 't7_6LCi06oA', start: 655, end: 815, title: '段落 1：認識主角佩佩與嚴峻高山環境 (10:55 - 13:35)' },
       { id: 't7_6LCi06oA', start: 960, end: 1075, title: '段落 2：體貼與主動提醒 (16:00 - 17:55)' },
       { id: '3AY1j6WrBtA', start: 800, end: 975, title: '段落 3：善的循環與手心向下 (13:20 - 16:15)' },
-      { id: '3AY1j6WrBtA', start: 1245, end: 1495, title: '段落 4：媽媽的善良身教與回頭看家人 (20:45 - 24:55)' },
+      { id: '3AY1j6WrBtA', start: 1160, end: 1495, title: '段落 4：媽媽的善良身教與回頭看家人 (19:20 - 24:55)' },
       { id: '3AY1j6WrBtA', start: 1605, end: 1885, title: '段落 5：雪中送炭，陪伴山友面對意外 (26:45 - 31:25)' },
       { id: '3AY1j6WrBtA', start: 2630, end: 2820, title: '段落 6：家人的牽掛與無條件支持 (43:50 - 47:00)' }
     ];
@@ -206,7 +206,6 @@
     let checkInterval = null;
     let isPlaying = false;
 
-    // 載入 YouTube IFrame API
     const tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
     const firstScriptTag = document.getElementsByTagName('script')[0];
